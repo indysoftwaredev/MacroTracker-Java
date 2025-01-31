@@ -171,4 +171,39 @@ class FoodServiceTest {
         assertThat(foundFoods).hasSize(1);
         assertThat(foundFoods.get(0).getCalories()).isLessThanOrEqualTo(calorieLimit);
     }
+    
+    @Test
+    void shouldThrowExceptionWhenUpdatingFoodWithExistingName() {
+       // Given
+       Long id = 1L;
+       Food existingFood = new Food("Chicken Breast", 3.6, 0.0, 31.0, 165.0);
+       Food updatedFood = new Food("Salmon Fillet", 13.0, 0.0, 25.0, 208.0);
+       
+       when(foodRepository.findById(id)).thenReturn(Optional.of(existingFood));
+       when(foodRepository.existsByNameIgnoreCase(updatedFood.getName())).thenReturn(true);
+
+       // When/Then
+       assertThrows(IllegalArgumentException.class, 
+           () -> foodService.updateFood(id, updatedFood));
+       verify(foodRepository, never()).save(any(Food.class));
+    }
+    
+    @Test
+    void shouldGetFoodsByProteinRange() {
+       // Given
+       Double minProtein = 20.0;
+       Double maxProtein = 30.0;
+       List<Food> expectedFoods = Arrays.asList(salmon); // Salmon has 25g protein
+       when(foodRepository.findByProteinBetween(minProtein, maxProtein)).thenReturn(expectedFoods);
+
+       // When
+       List<Food> foundFoods = foodService.getFoodsByProteinRange(minProtein, maxProtein);
+
+       // Then
+       assertThat(foundFoods).hasSize(1);
+       assertThat(foundFoods.get(0).getProtein()).isBetween(minProtein, maxProtein);
+       verify(foodRepository).findByProteinBetween(minProtein, maxProtein);
+    }
+    
+    
 }

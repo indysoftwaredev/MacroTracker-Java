@@ -1,6 +1,5 @@
 package com.example.macrotracker.service;
 
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import com.example.macrotracker.entity.Food;
@@ -15,7 +14,6 @@ public class FoodServiceImpl implements FoodService {
 
     private final FoodRepository foodRepository;
 
-    @Autowired
     public FoodServiceImpl(FoodRepository foodRepository) {
         this.foodRepository = foodRepository;
     }
