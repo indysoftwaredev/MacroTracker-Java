@@ -31,7 +31,7 @@ A Spring Boot REST API for tracking nutritional information of foods, including 
 
 1. Clone the repository:
 ```bash
-git clone https://github.com/yourusername/macrotracker.git
+git clone https://github.com/indysoftwaredev/macrotracker.git
 cd macrotracker
 ```
 
